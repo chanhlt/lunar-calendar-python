@@ -15,6 +15,10 @@ CREATE TABLE IF NOT EXISTS events (
     solar_month INTEGER,
     lunar_month INTEGER,
     lunar_day INTEGER,
+    start_hour INTEGER,
+    end_hour INTEGER,
+    start_minute INTEGER,
+    end_minute INTEGER,
     is_all_day INTEGER NOT NULL
 )
 """)
