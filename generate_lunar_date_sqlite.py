@@ -4,8 +4,20 @@ import sqlite3
 from lunardate import LunarDate
 
 # Connect to (or create) the database
-conn = sqlite3.connect("lunar_data.db")
+conn = sqlite3.connect("lunar_calendar.db")
 cur = conn.cursor()
+
+# Create the table if it doesn’t exist
+cur.execute("""
+CREATE TABLE IF NOT EXISTS events (
+    id INTEGER PRIMARY KEY,
+    solar_day INTEGER,
+    solar_month INTEGER,
+    lunar_month INTEGER,
+    lunar_day INTEGER,
+    is_all_day INTEGER NOT NULL
+)
+""")
 
 # Create the table if it doesn’t exist
 cur.execute("""
