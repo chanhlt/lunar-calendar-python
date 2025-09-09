@@ -11,6 +11,7 @@ cur = conn.cursor()
 cur.execute("""
 CREATE TABLE IF NOT EXISTS events (
     id INTEGER PRIMARY KEY,
+    name TEXT NOT NULL,
     solar_day INTEGER,
     solar_month INTEGER,
     lunar_month INTEGER,
@@ -22,6 +23,23 @@ CREATE TABLE IF NOT EXISTS events (
     is_all_day INTEGER NOT NULL
 )
 """)
+
+# Indexes for common reverse lookups
+cur.execute("CREATE INDEX IF NOT EXISTS idx_solar_date ON events (solar_day, solar_month)")
+cur.execute("CREATE INDEX IF NOT EXISTS idx_lunar_date ON events (lunar_day, lunar_month)")
+cur.execute("CREATE INDEX IF NOT EXISTS idx_is_full_day ON events (is_all_day)")
+
+
+# Prepare insert statement
+INSERT_EVENT_SQL = """
+INSERT OR REPLACE INTO events
+(name, solar_day, solar_month, lunar_day, lunar_month, start_hour, start_minute, end_hour, end_minute, is_all_day)
+VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+"""
+
+# cur.execute(INSERT_EVENT_SQL, ("Party Quốc Khánh", 2, 9, None, None, None, None, None, None, 1))
+# cur.execute(INSERT_EVENT_SQL, ("Về quê ăn Trung Thu", None, None, 15, 8, None, None, None, None, 1))
+# cur.execute(INSERT_EVENT_SQL, ("PV xin việc", 12, 9, None, None, 9, 30, 10, 30, 0))
 
 # Create the table if it doesn’t exist
 cur.execute("""
